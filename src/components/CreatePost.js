@@ -1,9 +1,11 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+import {firestore} from '../firebase';
+import {useFormInput} from '../hooks';
 
 function CreatePost() {
-  const [title, setTitle] = useState();
-  const [subTitle, setSubTitle] = useState();
-  const [content, setContent] = useState();
+  const title = useFormInput('');
+  const subTitle = useFormInput('');
+  const content = useFormInput('');
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -11,6 +13,13 @@ function CreatePost() {
     console.log('title', title);
     console.log('subTitle', subTitle);
     console.log('content', content);
+
+    firestore.collection('posts').add({
+      title: title.value,
+      content: content.value,
+      subTitle: subTitle.value,
+      createdAt: new Date(),
+    })
   }
 
   return (
@@ -20,23 +29,17 @@ function CreatePost() {
       <form onSubmit={handleSubmit}>
         <div className="form-field">
           <label>Title</label>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input value={title.value} onChange={title.onchange}/>
         </div>
 
         <div className="form-field">
           <label>Sub Title</label>
-          <input
-            value={subTitle}
-            onChange={(e) => setSubTitle(e.target.value)}
-          />
+          <input value={subTitle.value} onChange={subTitle.onchange} />
         </div>
 
         <div className="form-field">
           <label>Content</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
+          <textarea value={content.value} onChange={content.onchange} ></textarea>
         </div>
 
         <button className="create-post-btn">Create Post</button>
