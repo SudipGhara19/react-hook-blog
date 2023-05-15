@@ -19,7 +19,6 @@ function PostDetail(){
       <h1>{post.title}</h1>
       <h2>{post.subTitle}</h2>
       <h3>{post.content}</h3>
-      <p>{post.time}</p>
     </div>
     );
   }
